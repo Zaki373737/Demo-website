@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Influencer Elite</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: #131316;
+            color: #e4e1e6;
+            font-family: 'Inter', sans-serif;
+        }
+        .glass-card {
+            background: rgba(26, 26, 30, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .status-pending { background: rgba(160, 216, 0, 0.2); color: #b7f700; }
+        .status-contacted { background: rgba(119, 1, 208, 0.2); color: #dcb8ff; }
+        .status-in-progress { background: rgba(212, 228, 247, 0.2); color: #b8c8da; }
+        .status-completed { background: rgba(183, 247, 0, 0.3); color: #a0d800; }
+    </style>
+</head>
+<body>
+    <div class="min-h-screen bg-surface">
+        <!-- Header -->
+        <header class="bg-surface-container border-b border-outline-variant/10 sticky top-0 z-40">
+            <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+                <h1 class="text-2xl font-bold text-primary">
+                    <span class="text-primary-fixed">Influencer Elite</span> Admin
+                </h1>
+                <div class="flex items-center gap-4">
+                    <button onclick="logout()" class="px-4 py-2 text-on-surface-variant hover:text-primary transition">
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="max-w-7xl mx-auto px-4 py-8">
+            <!-- Stats Section -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+                <div class="glass-card p-6 rounded-lg">
+                    <div class="text-on-surface-variant text-sm mb-2">Total Proposals</div>
+                    <div class="text-3xl font-bold text-primary" id="totalProposals">-</div>
+                </div>
+                <div class="glass-card p-6 rounded-lg">
+                    <div class="text-on-surface-variant text-sm mb-2">Pending</div>
+                    <div class="text-3xl font-bold text-primary-fixed" id="pendingProposals">-</div>
+                </div>
+                <div class="glass-card p-6 rounded-lg">
+                    <div class="text-on-surface-variant text-sm mb-2">Contacted</div>
+                    <div class="text-3xl font-bold text-secondary" id="contactedProposals">-</div>
+                </div>
+                <div class="glass-card p-6 rounded-lg">
+                    <div class="text-on-surface-variant text-sm mb-2">Completed</div>
+                    <div class="text-3xl font-bold text-tertiary-fixed" id="completedProposals">-</div>
+                </div>
+            </div>
+
+            <!-- Proposals Table -->
+            <div class="glass-card rounded-lg p-6">
+                <h2 class="text-xl font-bold text-primary mb-6">Proposals</h2>
+                
+                <div id="loadingSpinner" class="text-center py-8">
+                    <div class="inline-block">
+                        <span class="material-symbols-outlined animate-spin text-primary-fixed text-4xl">autorenew</span>
+                    </div>
+                </div>
+
+                <div id="proposalsList" class="hidden overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="border-b border-outline-variant/20">
+                                <th class="text-left py-4 px-4 text-on-surface-variant text-sm font-semibold">Company</th>
+                                <th class="text-left py-4 px-4 text-on-surface-variant text-sm font-semibold">Contact</th>
+                                <th class="text-left py-4 px-4 text-on-surface-variant text-sm font-semibold">Budget</th>
+                                <th class="text-left py-4 px-4 text-on-surface-variant text-sm font-semibold">Status</th>
+                                <th class="text-left py-4 px-4 text-on-surface-variant text-sm font-semibold">Date</th>
+                                <th class="text-left py-4 px-4 text-on-surface-variant text-sm font-semibold">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="proposalsTableBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal for Proposal Details -->
+    <div id="proposalModal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center">
+        <div class="glass-card rounded-lg p-8 max-w-lg w-full mx-4">
+            <h2 class="text-xl font-bold text-primary mb-4">Proposal Details</h2>
+            <div id="proposalDetails" class="space-y-4 mb-6"></div>
+            
+            <div class="mb-6">
+                <label class="block text-on-surface-variant text-sm mb-2">Update Status</label>
+                <select id="statusSelect" class="w-full bg-surface border border-outline-variant/30 text-primary rounded px-3 py-2">
+                    <option value="pending">Pending</option>
+                    <option value="contacted">Contacted</option>
+                    <option value="in-progress">In Progress</option>
+                    <option value="completed">Completed</option>
+                </select>
+            </div>
+
+            <div class="mb-6">
+                <label class="block text-on-surface-variant text-sm mb-2">Notes</label>
+                <textarea id="notesInput" class="w-full bg-surface border border-outline-variant/30 text-primary rounded px-3 py-2" rows="3"></textarea>
+            </div>
+
+            <div class="flex gap-4">
+                <button onclick="updateProposal()" class="flex-1 bg-primary-fixed text-on-primary-fixed px-4 py-2 rounded font-semibold hover:opacity-90">
+                    Update
+                </button>
+                <button onclick="closeModal()" class="flex-1 bg-surface-container text-on-surface px-4 py-2 rounded hover:bg-surface-container-high">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentProposalId = null;
+        const API_BASE = '/api';
+
+        // Load proposals on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            loadProposals();
+            loadStatistics();
+        });
+
+        async function loadProposals() {
+            try {
+                const response = await fetch(`${API_BASE}/proposals`);
+                const data = await response.json();
+
+                if (data.success) {
+                    document.getElementById('loadingSpinner').classList.add('hidden');
+                    document.getElementById('proposalsList').classList.remove('hidden');
+                    
+                    const tbody = document.getElementById('proposalsTableBody');
+                    tbody.innerHTML = '';
+
+                    data.data.forEach(proposal => {
+                        const row = document.createElement('tr');
+                        row.className = 'border-b border-outline-variant/10 hover:bg-surface-container/30 transition';
+                        row.innerHTML = `
+                            <td class="py-4 px-4">${proposal.company}</td>
+                            <td class="py-4 px-4">
+                                <div class="text-sm">${proposal.firstName} ${proposal.lastName}</div>
+                                <div class="text-xs text-on-surface-variant">${proposal.email}</div>
+                            </td>
+                            <td class="py-4 px-4">${proposal.budget}</td>
+                            <td class="py-4 px-4">
+                                <span class="status-${proposal.status} px-3 py-1 rounded-full text-xs font-semibold">
+                                    ${proposal.status}
+                                </span>
+                            </td>
+                            <td class="py-4 px-4 text-sm text-on-surface-variant">
+                                ${new Date(proposal.createdAt).toLocaleDateString()}
+                            </td>
+                            <td class="py-4 px-4">
+                                <button onclick="openModal('${proposal._id}')" class="text-primary-fixed hover:text-primary-fixed/80">
+                                    <span class="material-symbols-outlined">edit</span>
+                                </button>
+                            </td>
+                        `;
+                        tbody.appendChild(row);
+                    });
+                }
+            } catch (error) {
+                console.error('Error loading proposals:', error);
+                document.getElementById('loadingSpinner').innerHTML = '<div class="text-error">Failed to load proposals</div>';
+            }
+        }
+
+        async function loadStatistics() {
+            try {
+                const response = await fetch(`${API_BASE}/proposals/statistics`);
+                const data = await response.json();
+
+                if (data.success) {
+                    const stats = data.statistics;
+                    document.getElementById('totalProposals').textContent = stats.totalProposals;
+                    document.getElementById('pendingProposals').textContent = stats.pendingProposals;
+                    document.getElementById('contactedProposals').textContent = stats.contactedProposals;
+                    document.getElementById('completedProposals').textContent = stats.completedProposals;
+                }
+            } catch (error) {
+                console.error('Error loading statistics:', error);
+            }
+        }
+
+        async function openModal(proposalId) {
+            currentProposalId = proposalId;
+            
+            try {
+                const response = await fetch(`${API_BASE}/proposals/${proposalId}`);
+                const data = await response.json();
+
+                if (data.success) {
+                    const proposal = data.data;
+                    
+                    document.getElementById('proposalDetails').innerHTML = `
+                        <div>
+                            <div class="text-on-surface-variant text-sm">Company</div>
+                            <div class="text-primary font-semibold">${proposal.company}</div>
+                        </div>
+                        <div>
+                            <div class="text-on-surface-variant text-sm">Contact</div>
+                            <div class="text-primary font-semibold">${proposal.firstName} ${proposal.lastName}</div>
+                            <div class="text-on-surface-variant text-sm">${proposal.email}</div>
+                        </div>
+                        <div>
+                            <div class="text-on-surface-variant text-sm">Budget</div>
+                            <div class="text-primary font-semibold">${proposal.budget}</div>
+                        </div>
+                        <div>
+                            <div class="text-on-surface-variant text-sm">Goals</div>
+                            <div class="text-primary font-semibold">${proposal.goals}</div>
+                        </div>
+                    `;
+
+                    document.getElementById('statusSelect').value = proposal.status;
+                    document.getElementById('notesInput').value = proposal.notes || '';
+                    
+                    document.getElementById('proposalModal').classList.remove('hidden');
+                }
+            } catch (error) {
+                console.error('Error loading proposal:', error);
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('proposalModal').classList.add('hidden');
+        }
+
+        async function updateProposal() {
+            const status = document.getElementById('statusSelect').value;
+            const notes = document.getElementById('notesInput').value;
+
+            try {
+                const response = await fetch(`${API_BASE}/proposals/${currentProposalId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ status, notes })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    closeModal();
+                    loadProposals();
+                    loadStatistics();
+                    alert('Proposal updated successfully!');
+                }
+            } catch (error) {
+                console.error('Error updating proposal:', error);
+                alert('Error updating proposal');
+            }
+        }
+
+        function logout() {
+            alert('Logout functionality coming soon');
+            // window.location.href = '/';
+        }
+    </script>
+</body>
+</html>

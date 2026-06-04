@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Influencer Elite | Sophisticated Catalyst</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@500&amp;family=Plus+Jakarta+Sans:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "error": "#ffb4ab",
+                        "on-secondary": "#480081",
+                        "on-secondary-fixed": "#2c0051",
+                        "surface-variant": "#353438",
+                        "secondary-fixed-dim": "#dcb8ff",
+                        "on-surface-variant": "#c2caad",
+                        "on-tertiary-container": "#576676",
+                        "inverse-primary": "#4b6700",
+                        "outline-variant": "#434933",
+                        "on-secondary-container": "#dcb7ff",
+                        "on-primary-fixed": "#141f00",
+                        "primary-fixed": "#b7f700",
+                        "inverse-on-surface": "#303033",
+                        "surface-container-low": "#1b1b1e",
+                        "surface-dim": "#131316",
+                        "on-error-container": "#ffdad6",
+                        "on-tertiary-fixed": "#0d1d2a",
+                        "error-container": "#93000a",
+                        "on-primary": "#253600",
+                        "secondary-container": "#7701d0",
+                        "surface-bright": "#39393c",
+                        "primary": "#ffffff",
+                        "on-primary-fixed-variant": "#374e00",
+                        "secondary": "#dcb8ff",
+                        "tertiary-fixed-dim": "#b8c8da",
+                        "on-tertiary-fixed-variant": "#394857",
+                        "surface": "#131316",
+                        "tertiary-container": "#d4e4f7",
+                        "on-background": "#e4e1e6",
+                        "surface-container-high": "#2a2a2d",
+                        "tertiary-fixed": "#d4e4f7",
+                        "primary-fixed-dim": "#a0d800",
+                        "secondary-fixed": "#efdbff",
+                        "tertiary": "#ffffff",
+                        "outline": "#8c9479",
+                        "surface-tint": "#a0d800",
+                        "surface-container-lowest": "#0e0e11",
+                        "on-surface": "#e4e1e6",
+                        "inverse-surface": "#e4e1e6",
+                        "surface-container-highest": "#353438",
+                        "on-primary-container": "#506e00",
+                        "primary-container": "#b7f700",
+                        "surface-container": "#1f1f22",
+                        "on-secondary-fixed-variant": "#6700b5",
+                        "on-tertiary": "#233240",
+                        "on-error": "#690005",
+                        "background": "#131316"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-max": "1440px",
+                        "gutter": "24px",
+                        "margin-desktop": "64px",
+                        "base": "8px",
+                        "margin-mobile": "20px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "body-md": ["Inter"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "display-lg": ["Plus Jakarta Sans"],
+                        "label-sm": ["JetBrains Mono"],
+                        "body-lg": ["Inter"],
+                        "headline-lg-mobile": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["32px", { "lineHeight": "40px", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "display-lg": ["72px", { "lineHeight": "80px", "letterSpacing": "-0.04em", "fontWeight": "800" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "headline-lg-mobile": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom styles for specific effects not easily done with tailwind classes alone */
+        .glass-panel {
+            background: rgba(26, 26, 30, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .bento-card {
+            background: rgba(26, 26, 30, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        .bento-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+        }
+        .glow-accent-violet {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(119, 1, 208, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        .glow-accent-lime {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(183, 247, 0, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        /* Interactive background canvas */
+        #interactive-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -2;
+            pointer-events: none;
+            background: #0F0F12; /* Base Obsidian */
+        }
+
+        .avatar-ring {
+            background: linear-gradient(135deg, #7701d0, #b7f700);
+            padding: 2px;
+            border-radius: 50%;
+        }
+        
+        .light-mode-section {
+            background-color: #ffffff;
+            color: #131316;
+        }
+        
+        .text-gradient {
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-image: linear-gradient(90deg, #ffffff, #e4e1e6);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface antialiased font-body-md overflow-x-hidden">
+<!-- Interactive Background Canvas -->
+<canvas id="interactive-bg"></canvas>
+<!-- Decorative Glows -->
+<div class="glow-accent-violet" style="top: 10%; left: 20%;"></div>
+<div class="glow-accent-lime" style="top: 40%; right: 10%;"></div>
+<!-- TopNavBar (Shared Component JSON) -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 dark:bg-surface/80 backdrop-blur-md shadow-sm border-b border-outline-variant/10 duration-300 ease-in-out">
+<div class="flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto">
+<div class="text-headline-md font-headline-md font-extrabold text-primary dark:text-primary-fixed">
+                Influencer Elite
+            </div>
+<!-- Navigation Links (Web) -->
+<nav class="hidden md:flex space-x-8">
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary hover:opacity-80 transition-opacity font-body-md text-body-md" href="#">Brands</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary hover:opacity-80 transition-opacity font-body-md text-body-md" href="#">Influencers</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary hover:opacity-80 transition-opacity font-body-md text-body-md" href="#">Gallery</a>
+</nav>
+<!-- Actions -->
+<div class="flex items-center space-x-4">
+<button class="hidden md:block font-body-md text-body-md text-primary dark:text-primary-fixed hover:opacity-80 transition-opacity">Login</button>
+<button class="font-body-md text-body-md bg-primary-fixed text-on-primary-fixed px-6 py-2 rounded font-semibold hover:opacity-80 transition-opacity">Get Started</button>
+</div>
+</div>
+</header>
+<main class="pt-[100px]">
+<!-- Hero Section -->
+<section class="min-h-[819px] flex flex-col justify-center items-center text-center px-margin-mobile md:px-margin-desktop relative">
+<div class="max-w-4xl z-10 space-y-8">
+<h1 class="font-display-lg text-display-lg text-primary tracking-tight">
+                    Elevate Your Influence.<br/>
+<span class="text-primary-fixed">Scale Your Brand.</span>
+</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto">
+                    The premium nexus where elite creators and visionary brands converge. We transform raw digital reach into measurable, high-impact cultural moments.
+                </p>
+<div class="flex flex-col sm:flex-row justify-center gap-4 pt-4">
+<button class="glass-panel px-8 py-4 rounded-full font-body-md text-body-md text-primary font-semibold hover:bg-white/10 transition-colors flex items-center justify-center gap-2 group">
+                        For Brands
+                        <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+<button class="bg-primary-fixed text-on-primary-fixed px-8 py-4 rounded-full font-body-md text-body-md font-semibold hover:brightness-110 transition-all flex items-center justify-center gap-2 group shadow-[0_0_20px_rgba(183,247,0,0.3)]">
+                        For Influencers
+                        <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Floating metrics decorative element -->
+<div class="absolute bottom-10 left-10 md:left-20 glass-panel p-4 rounded-lg hidden md:flex items-center gap-4 animate-pulse duration-1000">
+<div class="p-2 bg-secondary-container rounded-full text-primary">
+<span class="material-symbols-outlined">trending_up</span>
+</div>
+<div>
+<div class="font-label-sm text-label-sm text-on-surface-variant uppercase">Global Reach</div>
+<div class="font-headline-md text-headline-md text-primary">2.4B+</div>
+</div>
+</div>
+</section>
+<!-- Bento Grid Section: Trending Collaborations -->
+<section class="py-24 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+<div class="mb-12 flex justify-between items-end">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-primary mb-2">Trending Collaborations</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Real-time pulse of top-performing campaigns across the network.</p>
+</div>
+<button class="hidden md:flex items-center gap-2 text-primary-fixed hover:opacity-80 transition-opacity font-body-md text-body-md">
+                    View All Gallery <span class="material-symbols-outlined">east</span>
+</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter auto-rows-[250px]">
+<!-- Main Feature Bento (Spans 8 cols) -->
+<div class="bento-card md:col-span-8 row-span-2 rounded-xl p-8 flex flex-col justify-end relative group overflow-hidden">
+<img alt="Fashion campaign shoot" class="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:opacity-50 transition-opacity duration-500 z-0 mix-blend-luminosity" data-alt="A high-end fashion campaign photoshoot in a sleek, modern studio. The scene features a trendy model wearing avant-garde clothing, surrounded by professional lighting equipment and a vibrant, dynamic backdrop. The aesthetic is ultra-premium, dark mode, with subtle neon accents in electric violet and cyber lime. The mood is energetic, authoritative, and sophisticated." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCD2kGKNR2dpkA3-ibKVxwN9XZNJJKb5bKLHCiTiRoL0UToPyj5NA0D-mRQ54JHpruZKgm9tSV6TteEKnfCtxPt-cJJK2qBVa5kZZIJD0Wi6ufK0DSMaH2c_3aDKygk98THXbA8PlWT2pi6FZs9biegB3jGO8Hsbvcixn5cPv4WEhLve-NXBXeVdJIwXY3LQUQuJyPKCj24EjOKdV3zjFXoOlft86mHqEetoDAkfP4awjwo3yfvyjPZKSBTuTyokmpHML8EuSYt6fII"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest via-surface-container-lowest/50 to-transparent z-10"></div>
+<div class="relative z-20">
+<div class="flex gap-2 mb-4">
+<span class="bg-secondary-container/30 text-secondary-fixed border border-secondary-container rounded px-2 py-1 font-label-sm text-label-sm">Fashion</span>
+<span class="bg-surface-variant/50 text-on-surface border border-outline-variant rounded px-2 py-1 font-label-sm text-label-sm">ROI: 420%</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-primary mb-2">Aura x Maison Vanguard</h3>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-lg mb-6">A multi-platform takeover generating 45M impressions in 48 hours, redefining luxury street-wear digital activations.</p>
+<div class="flex items-center gap-3">
+<div class="avatar-ring">
+<img alt="Influencer Avatar" class="w-10 h-10 rounded-full object-cover" data-alt="A close-up portrait of a stylish, confident influencer with a modern haircut. They are looking directly at the camera with a subtle, professional expression. The lighting is moody and premium, fitting a dark mode aesthetic with high contrast and sharp details. The background is a blurred, dark grey surface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBNpRlj72FWOZY6SMwx4vaLilEP-Advxmd5ErzqhL7ecfl-xQ9LIskWP_UEyTq5DTGeLDJc4iFuG6gLwYquwwYGwa6QUf5A238EaY2FEqaI_G3CBmAfx2CB4c5TJnXZWwtCqkNvqolV9HXc6mnj5rek3OVfVFSoTh_el_tkn5NvbP9Vl-jGy3ZY1rMp8gQWItdX7vSm8ORqWcZLjZOTH7KJ_NHKgL8juXY-0etoUW26srRTtgH8I0lt7c8C7F9Nrfx9XOvTZ9rZ2RrG"/>
+</div>
+<div>
+<div class="font-body-md text-body-md text-primary font-semibold">Elena Rossi</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant">@elenavanguard</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Metrics Bento (Spans 4 cols) -->
+<div class="bento-card md:col-span-4 row-span-1 rounded-xl p-6 flex flex-col justify-between group">
+<div class="flex justify-between items-start">
+<div class="p-2 bg-surface-variant rounded-lg">
+<span class="material-symbols-outlined text-secondary">visibility</span>
+</div>
+<span class="text-primary-fixed font-label-sm text-label-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">arrow_upward</span> 24%
+                        </span>
+</div>
+<div>
+<div class="font-headline-lg text-headline-lg text-primary">12.8M</div>
+<div class="font-body-md text-body-md text-on-surface-variant">Avg. Impressions / Campaign</div>
+</div>
+<!-- Minimal Chart representation -->
+<div class="h-12 w-full mt-4 relative">
+<svg class="w-full h-full overflow-visible" preserveaspectratio="none" viewbox="0 0 100 30">
+<path class="drop-shadow-[0_0_5px_rgba(119,1,208,0.8)]" d="M0,30 Q25,5 50,15 T100,0" fill="none" stroke="#7701d0" stroke-width="2"></path>
+</svg>
+</div>
+</div>
+<!-- Action Bento (Spans 4 cols) -->
+<div class="bento-card md:col-span-4 row-span-1 rounded-xl p-6 flex flex-col justify-center items-center text-center group cursor-pointer hover:bg-surface-variant/30 transition-colors">
+<div class="w-16 h-16 rounded-full border-2 border-dashed border-primary-fixed flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary-fixed text-3xl">add</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-primary mb-1">Start a Campaign</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Connect with our strategy team.</p>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer (Shared Component JSON) -->
+<footer class="w-full bg-surface-container-lowest dark:bg-surface-container-lowest border-t border-outline-variant/10">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter px-margin-mobile md:px-margin-desktop py-12 max-w-container-max mx-auto opacity-100 hover:opacity-80 transition-opacity">
+<div class="col-span-1">
+<div class="text-headline-md font-headline-md font-bold text-primary dark:text-primary-fixed mb-4">
+                    Influencer Elite
+                </div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4 max-w-xs">
+                    The sophisticated catalyst for high-performance digital marketing.
+                </p>
+</div>
+<div class="col-span-1 md:col-span-2 flex flex-col md:flex-row gap-8 justify-around">
+<div class="flex flex-col space-y-2">
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary hover:underline transition-all" href="#">Campaigns</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary hover:underline transition-all" href="#">Talent Management</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary hover:underline transition-all" href="#">Case Studies</a>
+</div>
+<div class="flex flex-col space-y-2">
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary hover:underline transition-all" href="#">Privacy Policy</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary hover:underline transition-all" href="#">Terms of Service</a>
+</div>
+</div>
+<div class="col-span-1 flex flex-col justify-end items-start md:items-end mt-8 md:mt-0">
+<p class="font-body-md text-body-md text-on-surface-variant text-sm">
+                    © 2024 Influencer Elite Agency. All rights reserved.
+                </p>
+</div>
+</div>
+</footer>
+<!-- Interactive Background Script -->
+<script>
+        const canvas = document.getElementById('interactive-bg');
+        const ctx = canvas.getContext('2d');
+        
+        let width, height;
+        let mouseX = 0;
+        let mouseY = 0;
+        let particles = [];
+
+        function initCanvas() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+            
+            particles = [];
+            for(let i = 0; i < 50; i++) {
+                particles.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    size: Math.random() * 2 + 0.5,
+                    vx: (Math.random() - 0.5) * 0.5,
+                    vy: (Math.random() - 0.5) * 0.5,
+                    baseAlpha: Math.random() * 0.3 + 0.1
+                });
+            }
+        }
+
+        window.addEventListener('resize', initCanvas);
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            
+            // Draw faint gradient following mouse
+            let gradient = ctx.createRadialGradient(mouseX, mouseY, 0, mouseX, mouseY, 400);
+            gradient.addColorStop(0, 'rgba(119, 1, 208, 0.03)'); // Violet subtle glow
+            gradient.addColorStop(1, 'rgba(15, 15, 18, 0)');
+            
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, width, height);
+
+            // Draw and update particles
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+            particles.forEach(p => {
+                p.x += p.vx;
+                p.y += p.vy;
+
+                if(p.x < 0 || p.x > width) p.vx *= -1;
+                if(p.y < 0 || p.y > height) p.vy *= -1;
+
+                // Mouse interaction
+                let dx = mouseX - p.x;
+                let dy = mouseY - p.y;
+                let dist = Math.sqrt(dx*dx + dy*dy);
+                
+                let alpha = p.baseAlpha;
+                if(dist < 200) {
+                    alpha += (200 - dist) / 500;
+                    // gentle repel
+                    p.x -= dx * 0.005;
+                    p.y -= dy * 0.005;
+                }
+
+                ctx.globalAlpha = Math.min(alpha, 0.8);
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fill();
+            });
+
+            ctx.globalAlpha = 1;
+            requestAnimationFrame(animate);
+        }
+
+        initCanvas();
+        animate();
+    </script>
+</body></html>
+    <script src="/spa-nav.js"></script>
