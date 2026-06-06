@@ -1,8 +1,9 @@
-require('dotenv').config();
+const dotenv = require('dotenv');
+dotenv.config({ path: '.env.local' });
+dotenv.config();
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
 const path = require('path');
 
 // Initialize Express App
@@ -25,13 +26,7 @@ const authRoutes = require('./routes/auth');
 const campaignRoutes = require('./routes/campaigns');
 const emailRoutes = require('./routes/email');
 
-// Database Connection
-// mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/influencer_elite', {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true,
-// })
-// .then(() => console.log('✅ MongoDB connected'))
-// .catch(err => console.log('❌ MongoDB connection error:', err));
+// Supabase is initialized in services/supabaseClient.js
 
 // API Routes
 app.use('/api/proposals', proposalRoutes);

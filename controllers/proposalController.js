@@ -1,51 +1,62 @@
-const Proposal = require('../models/Proposal');
-const Contact = require('../models/Contact');
+const supabase = require('../services/supabaseClient');
 const { sendProposalConfirmation, sendProposalNotification } = require('../services/emailService');
 const validator = require('validator');
+
+const PROPOSAL_TABLE = 'proposals';
+const CONTACT_TABLE = 'contacts';
 
 // Submit brand proposal
 exports.submitProposal = async (req, res) => {
     try {
         const { firstName, lastName, email, company, budget, goals } = req.body;
 
-        // Validate required fields
         if (!firstName || !lastName || !email || !company || !budget || !goals) {
-            return res.status(400).json({ 
+            return res.status(400).json({
                 error: 'All fields are required',
-                success: false 
+                success: false
             });
         }
 
-        // Validate email format
         if (!validator.isEmail(email)) {
-            return res.status(400).json({ 
+            return res.status(400).json({
                 error: 'Invalid email format',
-                success: false 
+                success: false
             });
         }
 
-        // Validate budget
         const validBudgets = ['10k-25k', '25k-50k', '50k+'];
         if (!validBudgets.includes(budget)) {
-            return res.status(400).json({ 
+            return res.status(400).json({
                 error: 'Invalid budget selection',
-                success: false 
+                success: false
             });
         }
 
-        // Create proposal
-        const proposal = new Proposal({
+        const proposalPayload = {
             firstName: validator.trim(firstName),
             lastName: validator.trim(lastName),
             email: validator.normalizeEmail(email),
             company: validator.trim(company),
             budget,
-            goals: validator.trim(goals)
-        });
+            goals: validator.trim(goals),
+            status: 'pending',
+            notes: '',
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString()
+        };
 
-        await proposal.save();
+        const { data, error } = await supabase
+            .from(PROPOSAL_TABLE)
+            .insert([proposalPayload])
+            .select();
 
-        // Send confirmation email to client
+        if (error) {
+            console.error('Supabase insert error:', error);
+            throw error;
+        }
+
+        const proposal = data[0];
+
         await sendProposalConfirmation({
             firstName,
             company,
@@ -54,7 +65,6 @@ exports.submitProposal = async (req, res) => {
             goals
         });
 
-        // Send notification to admin
         await sendProposalNotification({
             firstName,
             lastName,
@@ -67,9 +77,8 @@ exports.submitProposal = async (req, res) => {
         res.status(201).json({
             success: true,
             message: 'Proposal submitted successfully!',
-            proposalId: proposal._id
+            proposalId: proposal.id
         });
-
     } catch (error) {
         console.error('Error submitting proposal:', error);
         res.status(500).json({
@@ -83,8 +92,16 @@ exports.submitProposal = async (req, res) => {
 // Get all proposals (admin)
 exports.getAllProposals = async (req, res) => {
     try {
-        const proposals = await Proposal.find().sort({ createdAt: -1 });
-        
+        const { data: proposals, error } = await supabase
+            .from(PROPOSAL_TABLE)
+            .select('*')
+            .order('createdAt', { ascending: false });
+
+        if (error) {
+            console.error('Supabase select error:', error);
+            throw error;
+        }
+
         res.status(200).json({
             success: true,
             count: proposals.length,
@@ -102,18 +119,26 @@ exports.getAllProposals = async (req, res) => {
 // Get single proposal
 exports.getProposal = async (req, res) => {
     try {
-        const proposal = await Proposal.findById(req.params.id);
+        const { data, error } = await supabase
+            .from(PROPOSAL_TABLE)
+            .select('*')
+            .eq('id', req.params.id)
+            .single();
 
-        if (!proposal) {
-            return res.status(404).json({
-                error: 'Proposal not found',
-                success: false
-            });
+        if (error) {
+            if (error.code === 'PGRST116') {
+                return res.status(404).json({
+                    error: 'Proposal not found',
+                    success: false
+                });
+            }
+            console.error('Supabase select error:', error);
+            throw error;
         }
 
         res.status(200).json({
             success: true,
-            data: proposal
+            data
         });
     } catch (error) {
         console.error('Error fetching proposal:', error);
@@ -144,27 +169,32 @@ exports.updateProposalStatus = async (req, res) => {
             });
         }
 
-        const proposal = await Proposal.findByIdAndUpdate(
-            req.params.id,
-            {
+        const { data, error } = await supabase
+            .from(PROPOSAL_TABLE)
+            .update({
                 status,
                 notes: notes || '',
-                updatedAt: Date.now()
-            },
-            { new: true }
-        );
+                updatedAt: new Date().toISOString()
+            })
+            .eq('id', req.params.id)
+            .select()
+            .single();
 
-        if (!proposal) {
-            return res.status(404).json({
-                error: 'Proposal not found',
-                success: false
-            });
+        if (error) {
+            if (error.code === 'PGRST116') {
+                return res.status(404).json({
+                    error: 'Proposal not found',
+                    success: false
+                });
+            }
+            console.error('Supabase update error:', error);
+            throw error;
         }
 
         res.status(200).json({
             success: true,
             message: 'Proposal updated successfully',
-            data: proposal
+            data
         });
     } catch (error) {
         console.error('Error updating proposal:', error);
@@ -194,21 +224,34 @@ exports.submitContact = async (req, res) => {
             });
         }
 
-        const contact = new Contact({
+        const contactPayload = {
             name: validator.trim(name),
             email: validator.normalizeEmail(email),
             subject: validator.trim(subject),
-            message: validator.trim(message)
-        });
+            message: validator.trim(message),
+            status: 'new',
+            response: null,
+            respondedAt: null,
+            createdAt: new Date().toISOString()
+        };
 
-        await contact.save();
+        const { data, error } = await supabase
+            .from(CONTACT_TABLE)
+            .insert([contactPayload])
+            .select();
+
+        if (error) {
+            console.error('Supabase insert error:', error);
+            throw error;
+        }
+
+        const contact = data[0];
 
         res.status(201).json({
             success: true,
             message: 'Thank you for contacting us. We will get back to you soon!',
-            contactId: contact._id
+            contactId: contact.id
         });
-
     } catch (error) {
         console.error('Error submitting contact:', error);
         res.status(500).json({
@@ -221,18 +264,37 @@ exports.submitContact = async (req, res) => {
 // Get statistics
 exports.getStatistics = async (req, res) => {
     try {
-        const totalProposals = await Proposal.countDocuments();
-        const pendingProposals = await Proposal.countDocuments({ status: 'pending' });
-        const contactedProposals = await Proposal.countDocuments({ status: 'contacted' });
-        const completedProposals = await Proposal.countDocuments({ status: 'completed' });
+        const totalCount = await supabase
+            .from(PROPOSAL_TABLE)
+            .select('id', { count: 'exact', head: true });
+
+        const pendingCount = await supabase
+            .from(PROPOSAL_TABLE)
+            .select('id', { count: 'exact', head: true })
+            .eq('status', 'pending');
+
+        const contactedCount = await supabase
+            .from(PROPOSAL_TABLE)
+            .select('id', { count: 'exact', head: true })
+            .eq('status', 'contacted');
+
+        const completedCount = await supabase
+            .from(PROPOSAL_TABLE)
+            .select('id', { count: 'exact', head: true })
+            .eq('status', 'completed');
+
+        if (totalCount.error || pendingCount.error || contactedCount.error || completedCount.error) {
+            console.error('Supabase count error:', totalCount.error || pendingCount.error || contactedCount.error || completedCount.error);
+            throw totalCount.error || pendingCount.error || contactedCount.error || completedCount.error;
+        }
 
         res.status(200).json({
             success: true,
             statistics: {
-                totalProposals,
-                pendingProposals,
-                contactedProposals,
-                completedProposals
+                totalProposals: totalCount.count || 0,
+                pendingProposals: pendingCount.count || 0,
+                contactedProposals: contactedCount.count || 0,
+                completedProposals: completedCount.count || 0
             }
         });
     } catch (error) {
