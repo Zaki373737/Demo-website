@@ -25,7 +25,24 @@
     </style>
 </head>
 <body>
-    <div class="min-h-screen bg-surface">
+    <!-- Login Modal (Authentication) -->
+    <div id="loginModal" class="fixed inset-0 bg-black/70 z-50 flex items-center justify-center">
+        <div class="glass-card rounded-lg p-8 max-w-sm w-full mx-4">
+            <h2 class="text-2xl font-bold text-primary mb-2">Admin Access</h2>
+            <p class="text-on-surface-variant text-sm mb-6">Enter your password to continue</p>
+            <div class="space-y-4">
+                <input type="password" id="adminPassword" class="w-full bg-surface border border-outline-variant/30 text-primary rounded px-4 py-3" placeholder="Enter password" />
+                <button onclick="validatePassword()" class="w-full bg-primary-fixed text-on-primary-fixed px-4 py-3 rounded font-semibold hover:opacity-90">
+                    Access Admin
+                </button>
+                <button onclick="goHome()" class="w-full bg-surface-container text-on-surface px-4 py-3 rounded hover:bg-surface-container-high">
+                    Go Back Home
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="adminContent" class="hidden min-h-screen bg-surface">
         <!-- Header -->
         <header class="bg-surface-container border-b border-outline-variant/10 sticky top-0 z-40">
             <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
@@ -127,12 +144,44 @@
     <script>
         let currentProposalId = null;
         const API_BASE = '/api';
+        const ADMIN_PASSWORD = 'Influencer@Elite2024'; // Change this to your desired password
 
-        // Load proposals on page load
+        // Check authentication on page load
         window.addEventListener('DOMContentLoaded', () => {
-            loadProposals();
-            loadStatistics();
+            checkAuthentication();
         });
+
+        function checkAuthentication() {
+            const isAuthenticated = sessionStorage.getItem('adminAuthenticated');
+            if (isAuthenticated === 'true') {
+                document.getElementById('loginModal').classList.add('hidden');
+                document.getElementById('adminContent').classList.remove('hidden');
+                loadProposals();
+                loadStatistics();
+            } else {
+                document.getElementById('loginModal').classList.remove('hidden');
+                document.getElementById('adminContent').classList.add('hidden');
+            }
+        }
+
+        function validatePassword() {
+            const password = document.getElementById('adminPassword').value;
+            if (password === ADMIN_PASSWORD) {
+                sessionStorage.setItem('adminAuthenticated', 'true');
+                document.getElementById('loginModal').classList.add('hidden');
+                document.getElementById('adminContent').classList.remove('hidden');
+                document.getElementById('adminPassword').value = '';
+                loadProposals();
+                loadStatistics();
+            } else {
+                alert('Invalid password. Please try again.');
+                document.getElementById('adminPassword').value = '';
+            }
+        }
+
+        function goHome() {
+            window.location.href = '/';
+        }
 
         async function loadProposals() {
             try {
@@ -268,8 +317,10 @@
         }
 
         function logout() {
-            alert('Logout functionality coming soon');
-            // window.location.href = '/';
+            sessionStorage.removeItem('adminAuthenticated');
+            document.getElementById('adminContent').classList.add('hidden');
+            document.getElementById('loginModal').classList.remove('hidden');
+            document.getElementById('adminPassword').value = '';
         }
     </script>
 </body>
