@@ -51,7 +51,6 @@ app.get('/gallery', (req, res) => {
     res.sendFile(path.join(__dirname, 'influencer_elite_campaign_gallery', 'code.html'));
 });
 
-// Admin dashboard
 app.get('/admin', (req, res) => {
     res.sendFile(path.join(__dirname, 'admin', 'index.html'));
 });

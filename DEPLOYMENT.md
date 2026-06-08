@@ -50,7 +50,6 @@ Open browser:
 - Homepage: http://localhost:5000
 - For Brands: http://localhost:5000/brands
 - Gallery: http://localhost:5000/gallery
-- Admin Dashboard: http://localhost:5000/admin
 
 ### Step 5: Test Form Submission
 
@@ -202,7 +201,6 @@ heroku certs:auto:enable
 - [ ] Gallery loads
 - [ ] Form submits on brands page
 - [ ] Confirmation email received
-- [ ] Admin dashboard accessible at /admin
 - [ ] Admin can view proposals
 
 ---
@@ -245,7 +243,6 @@ git push heroku main
 
 ## 📊 ADMIN DASHBOARD
 
-Access at: `http://localhost:5000/admin` or `https://your-app-name.herokuapp.com/admin`
 
 Features:
 - View all proposals

@@ -106,7 +106,6 @@ heroku open
 5. ✅ Check your email for confirmation!
 
 ### Access Admin Dashboard
-- Go to `/admin`
 - View all received proposals
 - Update proposal status
 - Add notes
@@ -152,7 +151,6 @@ Your project now has:
 server.js                    ← Main app
 package.json                 ← Dependencies
 .env                        ← Configuration
-admin/index.html            ← Admin dashboard
 models/                     ← Database
 routes/                     ← API endpoints
 services/emailService.js    ← Email sending
@@ -271,7 +269,6 @@ heroku logs --tail
 1. ✅ Test locally or on Heroku
 2. ✅ Submit test proposal
 3. ✅ Check confirmation email
-4. ✅ View in admin dashboard
 5. ✅ Share link with others
 
 ### Customization
@@ -309,7 +306,6 @@ You're all set when you see:
 2. ✅ Website opens in browser
 3. ✅ Form submits without errors
 4. ✅ Confirmation email arrives
-5. ✅ Proposal appears in admin
 6. ✅ Admin dashboard loads
 
 ---
@@ -320,17 +316,14 @@ You're all set when you see:
 Local:
   Homepage: http://localhost:5000
   For Brands: http://localhost:5000/brands
-  Admin: http://localhost:5000/admin
 
 Heroku (after deployment):
   Homepage: https://your-app-name.herokuapp.com
   For Brands: https://your-app-name.herokuapp.com/brands
-  Admin: https://your-app-name.herokuapp.com/admin
 
 Production (with domain):
   Homepage: https://zaki.com
   For Brands: https://zaki.com/brands
-  Admin: https://zaki.com/admin
 ```
 
 ---
@@ -363,7 +356,6 @@ Production (with domain):
 
 ## 📊 Admin Dashboard Features
 
-Access at `/admin`:
 - View all proposals
 - Update status (pending → contacted → in-progress → completed)
 - Add notes

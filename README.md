@@ -84,7 +84,6 @@ stitch/
   }
   ```
 
-- `GET /api/proposals` - Get all proposals (admin)
 - `GET /api/proposals/:id` - Get single proposal
 - `PUT /api/proposals/:id` - Update proposal status
 - `GET /api/proposals/statistics` - Get statistics
@@ -205,7 +204,6 @@ sudo apt install nginx
 
 ## 📊 Admin Dashboard
 
-Access admin features at `/admin/proposals` (authentication required)
 
 Features:
 - View all proposals
@@ -291,7 +289,6 @@ For technical support:
 2. ✅ Configure Gmail SMTP
 3. ✅ Start development server
 4. ✅ Test proposal submission
-5. ✅ Setup admin dashboard
 6. ✅ Configure domain (zaki.com)
 7. ✅ Deploy to production
 8. ✅ Setup SSL/HTTPS
