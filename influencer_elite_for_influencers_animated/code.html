@@ -234,10 +234,7 @@
             pointer-events: none;
         }
 
-        /* Magnetic Button */
-        .magnetic-btn {
-            transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1), background-color 0.3s;
-        }
+        
     </style>
 </head>
 <body class="antialiased min-h-screen flex flex-col font-body-md text-body-md">
@@ -253,8 +250,7 @@
 <a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary hover:opacity-80 transition-opacity font-body-md text-body-md duration-300 ease-in-out" href="/gallery">Gallery</a>
 </nav>
 <div class="hidden md:flex gap-4 items-center">
-<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary hover:opacity-80 transition-opacity font-body-md text-body-md duration-300 ease-in-out" href="#">Login</a>
-<a class="bg-primary-fixed text-on-primary-fixed px-6 py-2 rounded-full font-body-md text-body-md font-bold hover:opacity-90 transition-opacity duration-300 ease-in-out" href="#">Get Started</a>
+<a class="bg-primary-fixed text-on-primary-fixed px-6 py-2 rounded-full font-body-md text-body-md font-bold hover:opacity-90 transition-opacity duration-300 ease-in-out" href="/brands#request-proposal">Get Started</a>
 </div>
 <button class="md:hidden text-primary">
 <span class="material-symbols-outlined" data-icon="menu">menu</span>
@@ -278,14 +274,10 @@
                         We don't just manage influencers; we build empires. Get access to exclusive brand deal opportunities, strategic audience growth, and unmatched mentorship.
                     </p>
 <div class="flex flex-wrap gap-4 mt-4">
-<button class="magnetic-btn bg-primary-fixed text-on-primary-fixed px-8 py-4 rounded-lg font-body-md text-body-md font-bold hover:bg-surface-tint transition-colors duration-300 flex items-center gap-2" id="apply-btn">
-                            Apply to Join
-                            <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
-</button>
-<button class="px-8 py-4 rounded-lg font-body-md text-body-md text-primary border border-secondary-container bg-surface/50 backdrop-blur hover:bg-surface-container transition-colors duration-300 flex items-center gap-2">
-<span class="material-symbols-outlined" data-icon="play_circle">play_circle</span>
-                            See Our Roster
-                        </button>
+<a class="magnetic-btn bg-primary-fixed text-on-primary-fixed px-8 py-4 rounded-lg font-body-md text-body-md font-bold hover:bg-surface-tint transition-colors duration-300 flex items-center gap-2" id="apply-btn" href="/brands#request-proposal">
+                        Apply to Join
+                        <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+</a>
 </div>
 </div>
 <div class="relative h-[500px] w-full hidden lg:block glow-effect">
@@ -386,22 +378,6 @@
 </div>
 </footer>
 <script>
-    // Magnetic Button Effect
-    const magneticBtn = document.getElementById('apply-btn');
-    if (magneticBtn) {
-        magneticBtn.addEventListener('mousemove', (e) => {
-            const rect = magneticBtn.getBoundingClientRect();
-            const x = e.clientX - rect.left - rect.width / 2;
-            const y = e.clientY - rect.top - rect.height / 2;
-            // Dampen the movement
-            magneticBtn.style.transform = `translate(${x * 0.15}px, ${y * 0.15}px)`;
-        });
-        
-        magneticBtn.addEventListener('mouseleave', () => {
-            magneticBtn.style.transform = 'translate(0px, 0px)';
-        });
-    }
-
     // Intersection Observer for Staggered Reveal
     document.addEventListener("DOMContentLoaded", () => {
         const observerOptions = {
